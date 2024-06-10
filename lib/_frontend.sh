@@ -85,19 +85,34 @@ frontend_serverjs() {
 
   sleep 2
 
+# sudo su - deploy << EOF
+#   cat <<[-]EOF > /home/deploy/${nome_instancia}/frontend/server.js
+# // simple express server to run frontend production build;
+# const express = require('express')
+# const path = require('path')
+# const app = express()
+# app.use(express.static(path.join(__dirname, 'dist/pwa')))
+# app.get('/*', function (req, res) {
+#   res.sendFile(path.join(__dirname, 'dist/pwa', 'index.html'))
+# })
+# app.listen(${frontend_porta})
+# [-]EOF
+# EOF
+
 sudo su - deploy << EOF
   cat <<[-]EOF > /home/deploy/${nome_instancia}/frontend/server.js
 // simple express server to run frontend production build;
 const express = require('express')
 const path = require('path')
 const app = express()
-app.use(express.static(path.join(__dirname, 'dist/pwa')))
+app.use(express.static(path.join(__dirname, 'src/pages/login')))
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'dist/pwa', 'index.html'))
+  res.sendFile(path.join(__dirname, 'src/pages/login', 'index.html'))
 })
 app.listen(${frontend_porta})
 [-]EOF
 EOF
+
 
   sleep 2
 }
